@@ -20,16 +20,19 @@ class Riddler:
         self.ba = ba
         self.career_games = career_games
         self.hit_in_game_prob = 1 - (1 - ba)**bats_at_game
-        self.a = ['H', 'N']
-        self.p = [self.hit_in_game_prob, 1 - self.hit_in_game_prob]
+
+        self.prob_dict = {'H': self.hit_in_game_prob, 'N': 1 - self.hit_in_game_prob}
                 
     def consecutive_prob(self, streak):
-        return sum(''.join(np.random.choice(self.a, size = self.career_games, p = self.p)).count('H'*streak) > 0 for _ in range(N_sims))/N_sims
+        return sum(''.join(np.random.choice(list(self.prob_dict.keys()), 
+                                            size = self.career_games, 
+                                            p = list(self.prob_dict.values()))).count('H'*streak) > 0 
+                    for _ in range(N_sims))/N_sims
 
     def solve(self):
         start = time.time()
-        str1 = str(round(100*self.consecutive_prob(streak), 2)) + ' %' + ' chance of attaining a %d game hitting streak over %d games, \
-            with a %.2f batting average' % (streak, self.career_games, self.ba)
+        str1 = str(round(100*self.consecutive_prob(streak), 2)) + ' %' + ' chance of attaining a %d game \
+            hitting streak over %d games, with a %.2f batting average' % (streak, self.career_games, self.ba)
         str2 = 'duration: ' + str(round(time.time() - start, 2)) + ' seconds'
 
         print(str1)
