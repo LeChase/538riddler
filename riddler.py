@@ -20,7 +20,7 @@ class Riddler:
         self.ba = ba
         self.career_games = career_games
         self.hit_in_game_prob = 1 - (1 - ba)**bats_at_game
-
+        # 'H' is a game with a hit, 'N' is a game with no hits...
         self.prob_dict = {'H': self.hit_in_game_prob, 'N': 1 - self.hit_in_game_prob}
                 
     def consecutive_prob(self, streak):
