@@ -1,20 +1,15 @@
 """
 monte carlo simulation for batting streak
 
-
 https://fivethirtyeight.com/features/can-the-riddler-bros-beat-joe-dimaggios-hitting-streak/
 """
 
 import numpy as np
 import time
-
-
 from multiprocessing import Process
 
-# sims = 1000000 --> 10000s
 
-N_sims = 10000
-
+N_sims = 10000000
 streak = 57
 bats_at_game = 4
 
@@ -31,9 +26,10 @@ class Riddler:
     def consecutive_prob(self, streak):
         return sum(''.join(np.random.choice(self.a, size = self.career_games, p = self.p)).count('H'*streak) > 0 for _ in range(N_sims))/N_sims
 
-    def process(self):
+    def solve(self):
         start = time.time()
-        str1 = str(round(100*self.consecutive_prob(streak), 2)) + ' %' + ' chance of attaining a %d game hitting streak over %d games, with a %.2f batting average' % (streak, self.career_games, self.ba)
+        str1 = str(round(100*self.consecutive_prob(streak), 2)) + ' %' + ' chance of attaining a %d game hitting streak over %d games, \
+            with a %.2f batting average' % (streak, self.career_games, self.ba)
         str2 = 'duration: ' + str(round(time.time() - start, 2)) + ' seconds'
 
         print(str1)
@@ -52,7 +48,7 @@ def main():
     processes = []
     for batting_avg, n_games in player_dict.items():
         player = Riddler(ba = batting_avg, career_games = n_games)
-        trial = Process(target = player.process)
+        trial = Process(target = player.solve)
         trial.start()
         processes.append(trial)
 
